@@ -72,7 +72,7 @@ export function Menu() {
             href="/"
             className="font-bold text-xl text-white"
           >
-            Logo
+            Outrun
           </Link>
         </NavbarBrand>
       </NavbarContent>

@@ -85,15 +85,15 @@ export const Memeverse: CardContent = {
 export const CompanyName: string[] = ["公司名称", "公司名称", "公司名称", "公司名称"];
 
 export const NavbarMenu: NavbarItem[] = [
-  {
-    name: "Trade",
-    hasChildren: true,
-    children: [
-      { name: "Swap", path: "/trade/swap" },
-      { name: "Liquidity", path: "/trade/liquidity" },
-      { name: "Referral", path: "/trade/referral" },
-    ],
-  },
+  // {
+  //   name: "Trade",
+  //   hasChildren: true,
+  //   children: [
+  //     { name: "Swap", path: "/trade/swap" },
+  //     { name: "Liquidity", path: "/trade/liquidity" },
+  //     { name: "Referral", path: "/trade/referral" },
+  //   ],
+  // },
   {
     name: "Staking",
     hasChildren: true,
@@ -103,18 +103,18 @@ export const NavbarMenu: NavbarItem[] = [
       { name: "Yield Pool", path: "/staking/yieldpool" },
     ],
   },
-  {
-    name: "FFLaunch",
-    hasChildren: false,
-    path: "/fflaunch",
-    children: [],
-  },
-  {
-    name: "Memeverse",
-    hasChildren: false,
-    path: "/memeverse",
-    children: [],
-  },
+  // {
+  //   name: "FFLaunch",
+  //   hasChildren: false,
+  //   path: "/fflaunch",
+  //   children: [],
+  // },
+  // {
+  //   name: "Memeverse",
+  //   hasChildren: false,
+  //   path: "/memeverse",
+  //   children: [],
+  // },
 ];
 
 export const liquidityTableColumns = [
