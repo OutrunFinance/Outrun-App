@@ -4,7 +4,7 @@ import { Tab, Tabs } from "@nextui-org/react"
 import { ArrowLeft, Eye } from 'lucide-react'
 import MintTab from "./MintTab"
 import RedeemTab from "./RedeemTab"
-
+import StakeTab from "./StakeTab"
 export default function LiquidStakingCard() {
   return (
     <div className="w-full max-w-3xl bg-gray-900 text-white border border-gray-800 rounded-lg shadow-lg">
@@ -22,7 +22,7 @@ export default function LiquidStakingCard() {
             panel: "pt-3",
           }}
         >
-          <Tab
+          {/* <Tab
             key="mint"
             title={
               <div className="flex items-center space-x-2">
@@ -31,6 +31,16 @@ export default function LiquidStakingCard() {
             }
           >
             <MintTab />
+          </Tab> */}
+          <Tab
+            key="stake"
+            title={
+              <div className="flex items-center space-x-2">
+                <span>Stake</span>
+              </div>
+            }
+          >
+            <StakeTab />
           </Tab>
           <Tab
             key="redeem"
@@ -42,16 +52,6 @@ export default function LiquidStakingCard() {
           >
             <RedeemTab />
           </Tab>
-          {/* <Tab
-            key="stake"
-            title={
-              <div className="flex items-center space-x-2">
-                <span>Stake</span>
-              </div>
-            }
-          >
-            <StakeTab />
-          </Tab> */}
         </Tabs>
       </div>
     </div>

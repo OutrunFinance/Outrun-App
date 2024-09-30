@@ -14,14 +14,14 @@ import {
 import LiquidStakingCard from "@/components/LiquidStakingCard"
 
 const marketData = [
-  { name: 'Blast ETH', icon: '🔹', platform: 'Blast', liquidity: 71175091, longYield: 85.1, longPrice: 0.02908, fixedAPY: 13.29, fixedPrice: 0.9652 },
-  { name: 'USDB', icon: '💲', platform: 'Blast', liquidity: 16498710, longYield: 68.2, longPrice: 0.06781, fixedAPY: 15.6, fixedPrice: 0.9265 },
+  { name: 'Blast ETH', icon: '🔹', platform: 'Blast', liquidity: 71175091, currentlyAnchoredAPY: 85.1, averageLockTime: '86 days', days: 86 },
+  { name: 'USDB', icon: '💲', platform: 'Blast', liquidity: 16498710, currentlyAnchoredAPY: 68.2, averageLockTime: '86 days', days: 86 },
 ]
 
 export default function EnhancedMarketPage() {
   const [selectedMarket, setSelectedMarket] = useState(null);
 
-  const handleMarketClick = (market) => {
+  const handleMarketClick = (market: any) => {
     setSelectedMarket(market);
   };
 
@@ -38,8 +38,8 @@ export default function EnhancedMarketPage() {
             <TableRow className="border-b border-gray-700">
               <TableHead className="w-[250px] text-gray-300">Name <ArrowUpDown className="ml-2 h-4 w-4 inline" /></TableHead>
               <TableHead className="text-gray-300">Liquidity <ArrowUpDown className="ml-2 h-4 w-4 inline" /></TableHead>
-              <TableHead className="text-gray-300">Long Yield APY<br />YT Price</TableHead>
-              <TableHead className="text-gray-300">Fixed APY<br />PT Price</TableHead>
+              <TableHead className="text-gray-300">Average Lock Time <ArrowUpDown className="ml-2 h-4 w-4 inline" /></TableHead>
+              <TableHead className="text-gray-300">Currently Anchored APY</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -71,20 +71,16 @@ export default function EnhancedMarketPage() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 p-3 rounded-md inline-block min-w-[120px] shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-                    <div className="text-blue-400 font-semibold">YT</div>
-                    <div className="text-lg font-bold flex items-center">
-                      {item.longYield}%
-                      <TrendingUp className="ml-1 h-4 w-4 text-green-500" />
-                    </div>
-                    <div className="text-sm text-gray-300">${item.longPrice.toFixed(5)}</div>
+                  <div className="transition-all duration-300 ease-in-out hover:scale-105">
+                    {item.averageLockTime}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="bg-gradient-to-r from-purple-900/50 via-pink-900/50 to-blue-900/50 p-3 rounded-md inline-block min-w-[120px] shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
-                    <div className="text-purple-400 font-semibold">PT</div>
-                    <div className="text-lg font-bold">{item.fixedAPY}%</div>
-                    <div className="text-sm text-gray-300">${item.fixedPrice.toFixed(4)}</div>
+                  <div className="bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 p-3 rounded-md inline-block min-w-[120px] shadow-lg transition-all duration-300 ease-in-out hover:scale-105">
+                    <div className="text-lg font-bold flex items-center">
+                      {item.currentlyAnchoredAPY}%
+                      <TrendingUp className="ml-1 h-4 w-4 text-green-500" />
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>

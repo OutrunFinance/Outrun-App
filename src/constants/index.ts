@@ -100,15 +100,15 @@ export const NavbarMenu: NavbarItem[] = [
     path: "/markets",
     children: [],
   },
-  {
-    name: "Staking",
-    hasChildren: true,
-    children: [
-      { name: "Liquid Staking", path: "/staking/liquidstaking" },
-      { name: "Position", path: "/staking/position" },
-      { name: "Yield Pool", path: "/staking/yieldpool" },
-    ],
-  },
+  // {
+  //   name: "Staking",
+  //   hasChildren: true,
+  //   children: [
+  //     { name: "Liquid Staking", path: "/staking/liquidstaking" },
+  //     { name: "Position", path: "/staking/position" },
+  //     { name: "Yield Pool", path: "/staking/yieldpool" },
+  //   ],
+  // },
   // {
   //   name: "FFLaunch",
   //   hasChildren: false,

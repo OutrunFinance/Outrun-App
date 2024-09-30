@@ -26,6 +26,7 @@ export function DiscoverCard({
 					</div>
 					<Link
 						href={link}
+						target="_blank"
 						className="mt-4 md:mt-0 px-6 py-3 text-lg text-white bg-purple-600 rounded-full hover:bg-purple-700 transition-colors"
 					>
 						Learn More &gt;

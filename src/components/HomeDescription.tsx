@@ -21,7 +21,12 @@ export function HomeDescription() {
 				</p>
 				<div className="flex flex-wrap justify-center gap-6">
 					<ConnectButton />
-					<Button className="px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 text-white hover:from-blue-600 hover:via-purple-700 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+					<Button
+						href="https://outrun.gitbook.io/"
+						as="a"
+						target="_blank"
+						className="px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 text-white hover:from-blue-600 hover:via-purple-700 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+					>
 						Learn More
 					</Button>
 				</div>

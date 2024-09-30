@@ -16,6 +16,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { isAddress } from "viem";
 import { useChainId, usePublicClient } from "wagmi";
+import { ArrowLeft, Search } from "lucide-react";
 
 export default function TokenSelect({
   onSelect,
@@ -80,60 +81,80 @@ export default function TokenSelect({
         onOpenChange={onOpen}
         onClose={onClose}
         classNames={{
-          base: "w-[33.88rem] h-[35.5rem] bg-modal border-[0.06rem] rounded-[1.25rem] border-card shadow-card",
-          header: "bg-title text-[1.5rem] leading-[1.88rem] font-kronaOne text-transparent bg-clip-text",
-          closeButton: "active:bg-transparent hover:bg-transparent text-white mt-[0.56rem] mr-[0.56rem]",
-          body: " text-white",
-          backdrop: "backdrop-blur backdrop-opacity-100 bg-transparent",
-        }}>
+          base: "w-full max-w-md bg-gray-900 border border-gray-800 rounded-lg",
+          header: "border-b border-gray-800 p-4",
+          closeButton: "hidden",
+          body: "p-0",
+        }}
+      >
         <ModalContent>
           {() => (
-            <div>
-              <ModalHeader>SELECT TOKEN</ModalHeader>
+            <>
+              <ModalHeader>
+                <Button
+                  onPress={onClose}
+                  className="bg-transparent p-0 min-w-0"
+                  startContent={<ArrowLeft className="text-white" />}
+                >
+                  <span className="text-white ml-2">Back</span>
+                </Button>
+              </ModalHeader>
               <ModalBody>
-                {!hiddenSearchInput ? (
-                  <Input
-                    value={searchValue}
-                    placeholder="Search by Name, Symbol or Address"
-                    onValueChange={(value) => {
-                      searchHandler(value);
-                    }}
-                    classNames={{
-                      base: "rounded-[1.88rem] h-[2.5rem] text-white font-normal text-[0.88rem] leading-[1.25rem] font-verdana border-[0.03rem] border-[#504360] hover:bg-[#201937] bg-[#201937]",
-                      input: "data-[hover=true]:bg-transparent group-data-[has-value=true]:text-wihte font-black",
-                      inputWrapper:
-                        "bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent",
-                    }}
-                    startContent={<Image alt="search" src="/images/search.svg" />}
-                  />
-                ) : null}
-
-                <Listbox
-                  items={list}
-                  disabledKeys={[tokenDisable?.name as string]}
-                  classNames={{
-                    base: "w-[29rem] ml-[-1.7rem]",
-                    list: "max-h-[26rem] overflow-scroll",
-                  }}>
-                  {(item) => (
-                    <ListboxItem
-                      onPress={() => handleSelect(item)}
-                      key={item.name as string}
-                      startContent={<Image alt="icon" src="/images/select-token.svg" className="w-8 h-[2rem] mr-2" />}
+                <div className="p-4">
+                  {!hiddenSearchInput && (
+                    <Input
+                      value={searchValue}
+                      placeholder="Search token name or paste address"
+                      onValueChange={(value) => {
+                        searchHandler(value);
+                      }}
                       classNames={{
-                        base: "w-[28rem] data-[hover=true]:bg-[#EC19FF] data-[hover=true]:bg-opacity-5 data-[hover=true]:text-white rounded-0 px-[2rem]",
-                      }}>
-                      <div className="flex justify-between items-center h-[3.44rem] ">
-                        <div className="flex flex-col font-avenir font-medium">
-                          <span className="text-[1.13rem] leading-[1.56rem]">{item.name}</span>
-                          <span className="text-[#696283] text-[0.88rem] leading-5">{item.symbol}</span>
-                        </div>
-                      </div>
-                    </ListboxItem>
+                        base: "bg-gray-800 border border-gray-700 rounded-xl",
+                        input: "text-purple-300 placeholder:text-gray-500",
+                      }}
+                      startContent={<Search className="text-purple-400" />}
+                    />
                   )}
-                </Listbox>
+                </div>
+                <div className="px-4 pb-4">
+                  <div className="flex justify-between text-purple-300 mb-2">
+                    <span>Token</span>
+                    <span>Balance</span>
+                  </div>
+                  <Listbox
+                    items={list}
+                    disabledKeys={[tokenDisable?.name as string]}
+                    classNames={{
+                      base: "p-0 gap-0",
+                      list: "max-h-[400px] overflow-auto",
+                    }}
+                  >
+                    {(item) => (
+                      <ListboxItem
+                        key={item.name as string}
+                        onPress={() => handleSelect(item)}
+                        className="p-2 hover:bg-purple-900/30 transition-colors duration-200"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            <Image
+                              alt="icon"
+                              src="/images/select-token.svg"
+                              className="w-8 h-8 mr-3 rounded-full"
+                            />
+                            <div className="flex flex-col items-start">
+                              <span className="text-purple-300 text-base">{item.symbol}</span>
+                              <span className="text-gray-400 text-sm">{item.name}</span>
+                            </div>
+                          </div>
+                          <span className="text-purple-300">0</span>
+                        </div>
+                      </ListboxItem>
+                    )}
+                  </Listbox>
+                </div>
               </ModalBody>
-            </div>
+            </>
           )}
         </ModalContent>
       </Modal>

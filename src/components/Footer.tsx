@@ -21,12 +21,13 @@ export function Footer() {
 							Privacy
 						</Link>
 						<Link
-							href="/docs"
+							href="https://outrun.gitbook.io/"
+							target="_blank"
 							className="text-sm md:text-base hover:text-purple-400 transition-colors"
 						>
 							Docs
 						</Link>
-						<div className="flex items-center gap-4">
+						{/* <div className="flex items-center gap-4">
 							<a
 								href="https://discord.gg/outrun"
 								target="_blank"
@@ -55,7 +56,7 @@ export function Footer() {
 									className="w-6 h-6 hover:opacity-80 transition-opacity"
 								/>
 							</a>
-						</div>
+						</div> */}
 					</nav>
 				</div>
 			</div>

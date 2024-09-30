@@ -40,6 +40,7 @@ export function Card({
 					<Button
 						href={enterLink}
 						as="a"
+						target="_blank"
 						className="px-6 py-2 rounded-full text-white bg-transparent border border-purple-400 hover:bg-purple-900 transition-colors"
 					>
 						Learn more &gt;
