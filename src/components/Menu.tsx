@@ -1,6 +1,7 @@
-"use client";
-import { useState, useEffect } from "react";
-import { NavbarMenu } from "@/constants";
+"use client"
+
+import { useState, useEffect } from "react"
+import { NavbarMenu } from "@/constants"
 import {
   Navbar,
   NavbarBrand,
@@ -13,63 +14,55 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Button,
-} from "@nextui-org/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { CustomConnectButton } from "./CustomConnectButton";
-import { motion } from "framer-motion";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+} from "@nextui-org/react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
+import { ChevronDown, Settings } from "lucide-react"
 
 export function Menu() {
-  const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+      setScrolled(window.scrollY > 20)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const renderNavItem = (item: { name: string; path: string }) => (
     <NavbarItem key={item.name}>
       <Link
         href={item.path}
-        className={`relative px-3 py-2 rounded-md text-base font-medium ${
+        className={`px-3 py-2 text-sm font-medium ${
           pathname === item.path
-            ? "text-purple-400"
-            : "text-gray-200 hover:text-white"
+            ? "text-white"
+            : "text-gray-300 hover:text-white"
         } transition-colors duration-300`}
       >
         {item.name}
-        {pathname === item.path && (
-          <motion.div
-            className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-400"
-            layoutId="underline"
-            initial={false}
-          />
-        )}
       </Link>
     </NavbarItem>
-  );
+  )
 
   return (
     <Navbar
-      maxWidth="xl"
+      maxWidth="full"
       className={`transition-all duration-300 ${
         scrolled
           ? "bg-gray-900/95 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+          : "bg-gray-900"
       }`}
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="text-white"
+          className="text-gray-300"
         />
       </NavbarContent>
 
@@ -77,87 +70,167 @@ export function Menu() {
         <NavbarBrand>
           <Link
             href="/"
-            className="font-bold text-2xl sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 hover:from-pink-600 hover:to-purple-400 transition-all duration-300"
+            className="font-bold text-xl text-white"
           >
-            Outrun
+            Logo
           </Link>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-1" justify="center">
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {NavbarMenu.map((item) => {
           return item.hasChildren ? (
-            <Dropdown classNames={{ content: "bg-menu-card text-white min-w-[5rem]" }} key={item.name}>
+            <Dropdown key={item.name}>
               <NavbarItem>
                 <DropdownTrigger>
                   <Button
                     disableRipple
-                    className="bg-transparent text-[1.13rem] text-white hover:text-[#B625FF]"
-                    endContent={<img src="/images/arrow_down.svg" alt="arrow down" className="ml-[-0.5rem] mt-1" />}>
+                    className="bg-transparent text-sm text-gray-300 hover:text-white"
+                    endContent={<ChevronDown className="text-gray-300" size={14} />}
+                  >
                     {item.name}
                   </Button>
                 </DropdownTrigger>
               </NavbarItem>
               <DropdownMenu
-                className="min-w-[5rem] ml-[-1rem]"
+                aria-label={`${item.name} dropdown`}
+                className="w-[200px] bg-gray-800/90 backdrop-blur-md"
                 itemClasses={{
-                  base: "gap-4 data-[hover=true]:bg-transparent px-8 min-w-[5rem] menuItem",
-                }}>
-                {item.children?.map((child) => {
-                  return (
-                    <DropdownItem key={child.name}>
-                      <Link
-                        href={child.path}
-                        className={`${
-                          pathname === child.path ? "text-[#B625FF]" : "text-white"
-                        } bg-transparent text-[1rem] hover:text-[#B625FF]`}>
-                        {child.name}
-                      </Link>
-                    </DropdownItem>
-                  );
-                })}
+                  base: "text-gray-300 data-[hover=true]:text-white data-[hover=true]:bg-gray-700/50",
+                }}
+              >
+                {item.children?.map((child) => (
+                  <DropdownItem key={child.name} className="py-2">
+                    <Link
+                      href={child.path}
+                      className="text-sm font-medium"
+                    >
+                      {child.name}
+                    </Link>
+                  </DropdownItem>
+                ))}
               </DropdownMenu>
             </Dropdown>
           ) : (
             renderNavItem({ name: item.name, path: item.path || "" })
-          );
+          )
         })}
       </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <ConnectButton />
+          <ConnectButton.Custom>
+            {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
+              const ready = mounted
+              const connected = ready && account && chain
+
+              return (
+                <div
+                  {...(!ready && {
+                    'aria-hidden': true,
+                    'style': {
+                      opacity: 0,
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                    },
+                  })}
+                >
+                  {(() => {
+                    if (!connected) {
+                      return (
+                        <button onClick={openConnectModal} type="button" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded text-sm">
+                          Connect Wallet
+                        </button>
+                      )
+                    }
+
+                    if (chain.unsupported) {
+                      return (
+                        <button onClick={openChainModal} type="button" className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded text-sm">
+                          Wrong network
+                        </button>
+                      )
+                    }
+
+                    return (
+                      <div style={{ display: 'flex', gap: 12 }}>
+                        <button
+                          onClick={openChainModal}
+                          style={{ display: 'flex', alignItems: 'center' }}
+                          type="button"
+                          className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded text-sm"
+                        >
+                          {chain.hasIcon && (
+                            <div
+                              style={{
+                                background: chain.iconBackground,
+                                width: 12,
+                                height: 12,
+                                borderRadius: 999,
+                                overflow: 'hidden',
+                                marginRight: 4,
+                              }}
+                            >
+                              {chain.iconUrl && (
+                                <img
+                                  alt={chain.name ?? 'Chain icon'}
+                                  src={chain.iconUrl}
+                                  style={{ width: 12, height: 12 }}
+                                />
+                              )}
+                            </div>
+                          )}
+                          {chain.name}
+                        </button>
+
+                        <button onClick={openAccountModal} type="button" className="bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded text-sm">
+                          {account.displayName}
+                          {account.displayBalance
+                            ? ` (${account.displayBalance})`
+                            : ''}
+                        </button>
+                      </div>
+                    )
+                  })()}
+                </div>
+              )
+            }}
+          </ConnectButton.Custom>
+        </NavbarItem>
+        <NavbarItem>
+          <Button isIconOnly variant="light" aria-label="Settings" className="text-gray-300 hover:text-white">
+            <Settings size={20} />
+          </Button>
         </NavbarItem>
       </NavbarContent>
 
-      <NextUINavbarMenu className="bg-gray-900/95 backdrop-blur-md pt-6">
+      <NextUINavbarMenu className="bg-gray-900 pt-6">
         {NavbarMenu.map((item) => (
-          <NavbarItem
-            key={item.name}
-            className="flex flex-col items-start py-2"
-          >
+          <NavbarItem key={item.name} className="flex flex-col items-start py-2">
             {item.hasChildren ? (
-              <Dropdown classNames={{ content: "bg-menu-card text-white min-w-[5rem]" }}>
+              <Dropdown>
                 <DropdownTrigger>
                   <Button
                     disableRipple
-                    className="bg-transparent text-[1.13rem] text-white hover:text-[#B625FF]"
-                    endContent={<img src="/images/arrow_down.svg" alt="arrow down" className="ml-[-0.5rem] mt-1" />}>
+                    className="bg-transparent text-sm text-gray-300 hover:text-white"
+                    endContent={<ChevronDown className="text-gray-300" size={14} />}
+                  >
                     {item.name}
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu
-                  className="min-w-[5rem] ml-[-1rem]"
+                  aria-label={`${item.name} dropdown`}
+                  className="w-[200px] bg-gray-800/90 backdrop-blur-md"
                   itemClasses={{
-                    base: "gap-4 data-[hover=true]:bg-transparent px-8 min-w-[5rem] menuItem",
-                  }}>
+                    base: "text-gray-300 data-[hover=true]:text-white data-[hover=true]:bg-gray-700/50",
+                  }}
+                >
                   {item.children?.map((child) => (
-                    <DropdownItem key={child.name}>
+                    <DropdownItem key={child.name} className="py-2 border-0">
                       <Link
                         href={child.path}
-                        className={`${
-                          pathname === child.path ? "text-[#B625FF]" : "text-white"
-                        } bg-transparent text-[1rem] hover:text-[#B625FF]`}>
+                        className="text-sm font-medium"
+                      >
                         {child.name}
                       </Link>
                     </DropdownItem>
@@ -170,9 +243,9 @@ export function Menu() {
           </NavbarItem>
         ))}
         <NavbarItem className="mt-4">
-          <CustomConnectButton />
+          <ConnectButton />
         </NavbarItem>
       </NextUINavbarMenu>
     </Navbar>
-  );
+  )
 }
