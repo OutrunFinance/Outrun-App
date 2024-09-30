@@ -8,8 +8,8 @@ export const outstake: DiscoverCard = {
   items: [
     {
       icon: "/images/mint.svg",
-      title: "Mint & Stake",
-      description: "Stake ETH or USDB to earn more yields",
+      title: "Stake",
+      description: "Stake native yield tokens (LRT, LST, etc.) to earn more profits",
       link: "/staking/liquidstaking",
     },
     {
@@ -42,13 +42,13 @@ export const outrunAMM: DiscoverCard = {
     {
       icon: "/images/liquidity.svg",
       title: "Liquidity",
-      description: "Fund liquidity pools, earn trading fees",
+      description: "Earn trading fees or native yields",
       link: "/trade/liquidity",
     },
     {
       icon: "/images/referral.svg",
       title: "Referral",
-      description: "Composable On-Chain Referral Bonus Engine",
+      description: "Composable on-chain referral bonus engine",
       link: "/trade/referral",
     },
   ],

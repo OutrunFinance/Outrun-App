@@ -11,15 +11,15 @@ export function Discover() {
 				</span>
 			</h2>
 			<div className="flex flex-col gap-16 md:gap-24">
-				<DiscoverCard {...outstake} link="https://outrun.gitbook.io/" />
-				<DiscoverCard {...outrunAMM} link="https://outrun.gitbook.io/" />
+				<DiscoverCard {...outstake} link="https://outrun.gitbook.io/doc/outstake" />
+				<DiscoverCard {...outrunAMM} link="https://outrun.gitbook.io/doc/outswap/amm" />
 			</div>
 			<div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 				<div className="md:self-start">
-					<Card {...FFLaunch} enterLink="https://outrun.gitbook.io/"/>
+					<Card {...FFLaunch} enterLink="https://outrun.gitbook.io/doc/fflaunch"/>
 				</div>
 				<div className="md:self-end">
-					<Card {...Memeverse} enterLink="https://outrun.gitbook.io/" />
+					<Card {...Memeverse} enterLink="https://outrun.gitbook.io/doc/memeverse" />
 				</div>
 			</div>
 		</div>
