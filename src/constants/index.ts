@@ -95,6 +95,12 @@ export const NavbarMenu: NavbarItem[] = [
   //   ],
   // },
   {
+    name: "Markets",
+    hasChildren: false,
+    path: "/markets",
+    children: [],
+  },
+  {
     name: "Staking",
     hasChildren: true,
     children: [
