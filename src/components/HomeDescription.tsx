@@ -31,40 +31,6 @@ export function HomeDescription() {
 					</Button>
 				</div>
 			</div>
-			<div className="mt-20 w-full max-w-4xl bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-purple-500 border-opacity-30">
-				<h2 className="text-2xl md:text-3xl font-bold mb-6 text-purple-300">
-					Why Choose Outrun?
-				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-					<div className="bg-gray-900 bg-opacity-50 p-6 rounded-xl">
-						<h3 className="text-xl font-semibold mb-2 text-blue-400">
-							Secure Transactions
-						</h3>
-						<p className="text-gray-300">
-							Experience unparalleled security and transparency in every
-							transaction.
-						</p>
-					</div>
-					<div className="bg-gray-900 bg-opacity-50 p-6 rounded-xl">
-						<h3 className="text-xl font-semibold mb-2 text-purple-400">
-							Community-Driven
-						</h3>
-						<p className="text-gray-300">
-							Be part of a thriving ecosystem where your voice matters in
-							governance.
-						</p>
-					</div>
-					<div className="bg-gray-900 bg-opacity-50 p-6 rounded-xl">
-						<h3 className="text-xl font-semibold mb-2 text-pink-400">
-							Innovative Products
-						</h3>
-						<p className="text-gray-300">
-							Access cutting-edge DeFi products designed for the future of
-							finance.
-						</p>
-					</div>
-				</div>
-			</div>
 		</div>
 	);
 }

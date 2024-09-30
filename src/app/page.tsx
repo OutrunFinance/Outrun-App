@@ -14,7 +14,7 @@ export default function Index() {
         <div className="container mx-auto px-4 py-8">
           <HomeDescription />
           <Discover />
-          <Investor />
+          {/* <Investor /> */}
           {/* <Partner /> */}
         </div>
       </div>

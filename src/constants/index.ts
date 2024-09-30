@@ -82,7 +82,7 @@ export const Memeverse: CardContent = {
   learnLink: "",
 };
 
-export const CompanyName: string[] = ["公司名称", "公司名称", "公司名称", "公司名称"];
+export const CompanyName: string[] = [];
 
 export const NavbarMenu: NavbarItem[] = [
   // {
