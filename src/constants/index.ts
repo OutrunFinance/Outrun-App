@@ -85,42 +85,42 @@ export const Memeverse: CardContent = {
 export const CompanyName: string[] = [];
 
 export const NavbarMenu: NavbarItem[] = [
-  // {
-  //   name: "Trade",
-  //   hasChildren: true,
-  //   children: [
-  //     { name: "Swap", path: "/trade/swap" },
-  //     { name: "Liquidity", path: "/trade/liquidity" },
-  //     { name: "Referral", path: "/trade/referral" },
-  //   ],
-  // },
   {
     name: "Markets",
     hasChildren: false,
     path: "/markets",
     children: [],
   },
-  // {
-  //   name: "Staking",
-  //   hasChildren: true,
-  //   children: [
-  //     { name: "Liquid Staking", path: "/staking/liquidstaking" },
-  //     { name: "Position", path: "/staking/position" },
-  //     { name: "Yield Pool", path: "/staking/yieldpool" },
-  //   ],
-  // },
-  // {
-  //   name: "FFLaunch",
-  //   hasChildren: false,
-  //   path: "/fflaunch",
-  //   children: [],
-  // },
-  // {
-  //   name: "Memeverse",
-  //   hasChildren: false,
-  //   path: "/memeverse",
-  //   children: [],
-  // },
+  {
+    name: "Trade",
+    hasChildren: true,
+    children: [
+      { name: "Swap", path: "/trade/swap" },
+      { name: "Liquidity", path: "/trade/liquidity" },
+      { name: "Referral", path: "/trade/referral" },
+    ],
+  },
+  {
+    name: "Staking",
+    hasChildren: true,
+    children: [
+      { name: "Liquid Staking", path: "/staking/liquidstaking" },
+      { name: "Position", path: "/staking/position" },
+      { name: "Yield Pool", path: "/staking/yieldpool" },
+    ],
+  },
+  {
+    name: "FFLaunch",
+    hasChildren: false,
+    path: "/fflaunch",
+    children: [],
+  },
+  {
+    name: "Memeverse",
+    hasChildren: false,
+    path: "/memeverse",
+    children: [],
+  },
 ];
 
 export const liquidityTableColumns = [

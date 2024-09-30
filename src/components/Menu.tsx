@@ -226,7 +226,7 @@ export function Menu() {
                   }}
                 >
                   {item.children?.map((child) => (
-                    <DropdownItem key={child.name} className="py-2 border-0">
+                    <DropdownItem key={child.name} className="py-2">
                       <Link
                         href={child.path}
                         className="text-sm font-medium"

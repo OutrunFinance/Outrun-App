@@ -14,8 +14,8 @@ import {
 import LiquidStakingCard from "@/components/LiquidStakingCard"
 
 const marketData = [
-  { name: 'Blast ETH', icon: '🔹', platform: 'Blast', liquidity: 71175091, currentlyAnchoredAPY: 85.1, averageLockTime: '86 days', days: 86 },
-  { name: 'USDB', icon: '💲', platform: 'Blast', liquidity: 16498710, currentlyAnchoredAPY: 68.2, averageLockTime: '86 days', days: 86 },
+  { name: 'Blast ETH', icon: '🔹', platform: 'Blast', liquidity: 71175091, currentlyAnchoredAPY: 7.9, averageLockTime: '235 days', days: 235 },
+  { name: 'USDB', icon: '💲', platform: 'Blast', liquidity: 16498710, currentlyAnchoredAPY: 5.8, averageLockTime: '112 days', days: 112 },
 ]
 
 export default function EnhancedMarketPage() {

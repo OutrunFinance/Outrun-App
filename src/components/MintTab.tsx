@@ -1,192 +1,89 @@
-import { addressMap } from "@/contracts/addressMap";
-import { BlockExplorers } from "@/contracts/chains";
-import { currencyMintPageSelectList } from "@/contracts/currencys";
-import { getORETH, getORUSD } from "@/contracts/getTokenContract";
-import { ORETH, ORUSD, USDB } from "@/contracts/tokens";
-import useContract from "@/hooks/useContract";
-import { BtnAction, SwapView, useSwap } from "@/hooks/useSwap";
-import { Ether, type Currency } from "@/packages/core";
-import { Button, Divider, Image, Input, Link } from "@nextui-org/react";
-import { useEffect, useMemo } from "react";
+import { Button, Divider, Input, Link } from "@nextui-org/react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { parseEther, parseUnits } from "viem";
-import { useAccount, useChainId, usePublicClient, useWalletClient } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import ToastCustom from "./ToastCustom";
 import TokenSelect from "./TokenSelect";
+
+const mockTokens = {
+  "PT-BETH": { symbol: "PT-BETH", name: "Principal Token BETH" },
+  "SY-BETH": { symbol: "SY-BETH", name: "Synthetic BETH" },
+  "POT-BETH": { symbol: "POT-BETH", name: "Principal Only Token BETH" },
+  BETH: { symbol: "BETH", name: "Blast ETH" },
+};
 
 export default function MintTab() {
   const chainId = useChainId();
   const account = useAccount();
-  const publicClient = usePublicClient();
-  const { data: walletClient } = useWalletClient();
-  const { write: writeContract } = useContract();
-
-  const {
-    swapData,
-    loading,
-    setToken0,
-    setToken1,
-    setLoading,
-    approveTokens,
-    token0AmountInputHandler,
-    updateTokenBalance,
-    token1AmountInputHandler,
-    maxHandler,
-  } = useSwap({
-    view: SwapView.mint,
-  });
-
-  const blockExplore = useMemo(() => {
-    return BlockExplorers[chainId];
-  }, [chainId]);
+  const [token0, setToken0] = useState(mockTokens["PT-BETH"]);
+  const [token1, setToken1] = useState(mockTokens["SY-BETH"]);
+  const [token0Amount, setToken0Amount] = useState("");
+  const [token1Amount, setToken1Amount] = useState("");
 
   const title = useMemo(() => {
-    if (!swapData.token0) return "Choose Token";
-    if (swapData.token0.equals(Ether.onChain(chainId))) {
-      return "Mint orETH";
-    } else if (swapData.token0.equals(ORETH[chainId])) {
-      return "Redeem ETH";
-    } else if (swapData.token0.equals(USDB[chainId])) {
-      return "Mint orUSD";
-    } else {
-      return "Redeem USDB";
-    }
-  }, [swapData.token0, chainId]);
+    if (!token0) return "Choose Token";
+    return `Redeem ${token0.symbol}`;
+  }, [token0]);
+
+  const exchangeRate = useMemo(() => {
+    return 1.05; // Mock exchange rate
+  }, []);
 
   useEffect(() => {
-    setToken0(Ether.onChain(chainId));
-    setToken1(ORETH[chainId]);
-  }, [chainId]);
-
-  const onReverse = () => {
-    if (!swapData.token0 || !swapData.token1) return;
-    setToken0(swapData.token1);
-    setToken1(swapData.token0);
-  };
-
-  function onSelectToken0(token: Currency) {
-    setToken0(token);
-    if (token.equals(Ether.onChain(chainId))) {
-      setToken1(ORETH[chainId]);
-    } else if (token.equals(ORETH[chainId])) {
-      setToken1(Ether.onChain(chainId));
-    } else if (token.equals(USDB[chainId])) {
-      setToken1(ORUSD[chainId]);
+    if (token0Amount && !isNaN(+token0Amount)) {
+      setToken1Amount((+token0Amount * exchangeRate).toFixed(6));
     } else {
-      setToken1(USDB[chainId]);
+      setToken1Amount("");
+    }
+  }, [token0Amount, exchangeRate]);
+
+  function onSelectToken0(token: any) {
+    setToken0(token);
+    if (token.symbol === "PT-BETH") {
+      setToken1(mockTokens["SY-BETH"]);
+    } else if (token.symbol === "POT-BETH") {
+      setToken1(mockTokens.BETH);
     }
   }
 
-  async function swap() {
-    if (!swapData.token0 || !swapData.token1 || !account.address)
+  async function redeem() {
+    if (!account.address)
       return toast.custom(<ToastCustom content="Please Connect Wallet" />);
-    setLoading(true);
-    if (swapData.isTransformView) {
-      let data;
-      if (swapData.token0.isNative) {
-        // eth -> oreth
-        data = await writeContract(
-          // @ts-ignore
-          getORETH(chainId, publicClient!, walletClient),
-          {
-            actionTitle: title,
-          },
-          "deposit",
-          [],
-          {
-            account,
-            value: parseEther(swapData.token0AmountInput),
-          },
-        );
-      } else if (swapData.token1.isNative) {
-        await approveTokens(addressMap[chainId].ORETH);
-        // oreth=>eth
-        data = await writeContract(
-          // @ts-ignore
-          getORETH(chainId, publicClient!, walletClient),
-          {
-            actionTitle: title,
-          },
-          "withdraw",
-          [parseEther(swapData.token0AmountInput)],
-          {
-            account,
-          },
-        );
-      } else if (swapData.token0.equals(USDB[chainId])) {
-        // usdb -> orusd
-        await approveTokens(addressMap[chainId].ORUSD);
-        data = await writeContract(
-          // @ts-ignore
-          getORUSD(chainId, publicClient, walletClient),
-          {
-            actionTitle: title,
-          },
-          "deposit",
-          [parseUnits(swapData.token0AmountInput, 18)],
-          {
-            account,
-          },
-        );
-      } else {
-        // orusd -> usdb
-        await approveTokens(addressMap[chainId].ORUSD);
-        data = await writeContract(
-          // @ts-ignore
-          getORUSD(chainId, publicClient, walletClient),
-          {
-            actionTitle: title,
-          },
-          "withdraw",
-          [parseUnits(swapData.token0AmountInput, 18)],
-          {
-            account,
-          },
-        );
-      }
-      if (data && data.status === "success") {
-        toast.custom(() => (
-          <ToastCustom
-            content={
-              <>
-                {`You have successfully minted ${swapData.token0AmountInput} ${swapData.token1?.symbol}`}. view on{" "}
-                <Link href={blockExplore + "/tx/" + data.transactionHash}>BlastScan</Link>
-              </>
-            }
-          />
-        ));
-        await updateTokenBalance();
-      }
-    }
-    token0AmountInputHandler("");
-    setLoading(false);
+
+    // Mock redeem function
+    toast.custom(() => (
+      <ToastCustom
+        content={
+          <>
+            {`You have successfully redeemed ${token0Amount} ${token0.symbol} for ${token1Amount} ${token1.symbol}`}
+            . View on <Link href="#">BlockExplorer</Link>
+          </>
+        }
+      />
+    ));
+
+    setToken0Amount("");
+    setToken1Amount("");
   }
+
   return (
     <div className="flex flex-col items-center">
-      <div className="w-[32.9rem] h-[14rem] rounded-xl border-solid border-[0.06rem] border-[#C29BFF] border-opacity-[0.37] flex flex-col justify-around py-2 px-8 relative">
-        <Button isIconOnly className="bg-transparent absolute left-[50%] top-[41%]" onClick={onReverse}>
-          <Image alt="transfer" src="/images/transfer-bg.svg" />
-        </Button>
+      <div className="w-[32.9rem] h-[14rem] rounded-xl border-solid border-[0.06rem] border-[#C29BFF] border-opacity-[0.37] flex flex-col justify-around py-2 px-8">
         <div>
           <Input
             placeholder="0.00"
-            value={swapData.token0AmountInput}
-            onValueChange={(value) => {
-              token0AmountInputHandler(value);
-            }}
+            value={token0Amount}
+            onValueChange={setToken0Amount}
             classNames={{
               base: "h-[2.5rem] text-white",
-              input:
-                "data-[hover=true]:bg-transparent group-data-[has-value=true]:text-wihte text-[1.25rem] leading-[1.69rem] font-avenir font-black text-right w-[12rem]",
-              inputWrapper:
-                "bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent px-0",
+              input: "data-[hover=true]:bg-transparent group-data-[has-value=true]:text-white text-[1.25rem] leading-[1.69rem] font-avenir font-black text-right w-[12rem]",
+              inputWrapper: "bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent px-0",
               innerWrapper: "justify-between",
             }}
             startContent={
               <TokenSelect
-                tokenList={currencyMintPageSelectList}
-                token={swapData.token0}
-                tokenDisable={swapData.token1}
+                tokenList={[mockTokens["PT-BETH"], mockTokens["POT-BETH"]]}
+                token={token0 as any}
                 onSelect={onSelectToken0}
               />
             }
@@ -194,16 +91,16 @@ export default function MintTab() {
           <div className="flex justify-between mt-4">
             <div className="text-white text-opacity-50 flex gap-x-4">
               <span className="text-[0.88rem] leading-[1.19rem] font-avenir font-medium">
-                balance: {swapData.token0Balance.toFixed(6)}
+                balance: 10.000000
               </span>
               <Button
-                onClick={() => maxHandler(0)}
+                onClick={() => setToken0Amount("10")}
                 className="text-white text-[0.82rem] font-avenir leading-[1.12rem] font-normal text-opacity-50 bg-transparent rounded-[1.76rem] border-solid border-[0.06rem] border-opacity-30  px-0 min-w-[2.67rem] h-[1.34rem]">
                 Max
               </Button>
             </div>
             <span className="text-white text-opacity-50 text-[0.88rem] leading-[1.19rem] font-avenir font-normal">
-              ～${}
+              ～$0
             </span>
           </div>
         </div>
@@ -211,21 +108,18 @@ export default function MintTab() {
         <div>
           <Input
             placeholder="0.00"
-            value={swapData.token1AmountInput}
-            onValueChange={(value) => token1AmountInputHandler(value)}
+            value={token1Amount}
+            readOnly
             classNames={{
               base: "h-[2.5rem] text-white",
-              input:
-                "data-[hover=true]:bg-transparent group-data-[has-value=true]:text-wihte text-[1.25rem] leading-[1.69rem] font-avenir font-black text-right w-[10rem]",
-              inputWrapper:
-                "bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent px-0",
+              input: "data-[hover=true]:bg-transparent group-data-[has-value=true]:text-white text-[1.25rem] leading-[1.69rem] font-avenir font-black text-right w-[10rem]",
+              inputWrapper: "bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent px-0",
               innerWrapper: "justify-between",
             }}
             startContent={
               <TokenSelect
-                tokenList={currencyMintPageSelectList}
-                tokenDisable={swapData.token0}
-                token={swapData.token1}
+                tokenList={[mockTokens["SY-BETH"], mockTokens.BETH]}
+                token={token1 as any}
                 onSelect={() => {}}
               />
             }
@@ -233,37 +127,29 @@ export default function MintTab() {
           <div className="flex justify-between mt-4">
             <div className="text-white text-opacity-50 flex gap-x-4">
               <span className="text-[0.88rem] leading-[1.19rem] font-avenir font-medium">
-                balance: {swapData.token1Balance.toFixed(6)}
+                balance: 0.000000
               </span>
             </div>
             <span className="text-white text-opacity-50 text-[0.88rem] leading-[1.19rem] font-avenir font-normal">
-              ～${}
+              ～$0
             </span>
           </div>
         </div>
       </div>
-      {swapData.token0 && swapData.token1 ? (
-        <div className="flex justify-between px-8 w-[32.9rem] mt-[0.79rem] text-white text-opacity-50 text-[0.82rem] leading-[1.12rem] font-avenir font-medium">
+      <div className="flex flex-col gap-y-[0.35rem] w-[32.9rem] text-[0.82rem] leading-[1.12rem] font-avenir font-medium my-[0.71rem]">
+        <div className="flex justify-between w-full text-white text-opacity-50">
           <span>Exchange Rate</span>
           <span>
-            1 {swapData.token0!.symbol} = 1 {swapData.token1!.symbol}
+            1 {token0.symbol} = {exchangeRate} {token1.symbol}
           </span>
         </div>
-      ) : null}
-
-      {swapData.submitButtonStatus === BtnAction.insufficient ? (
-        <Button className="bg-button-gradient mt-8 text-white w-[11.41rem] h-[3.59rem] rounded-[3.97rem]">
-          insufficient token
-        </Button>
-      ) : (
-        <Button
-          onPress={swap}
-          isDisabled={swapData.submitButtonStatus === BtnAction.disable}
-          isLoading={loading}
-          className="bg-button-gradient mt-8 text-white w-[11.41rem] h-[3.59rem] rounded-[3.97rem]">
-          {title}
-        </Button>
-      )}
+      </div>
+      <Button
+        onClick={redeem}
+        isDisabled={!token0Amount || !token1Amount}
+        className="bg-button-gradient text-white w-[11.41rem] h-[3.59rem] rounded-[3.97rem]">
+        {title}
+      </Button>
     </div>
   );
 }
