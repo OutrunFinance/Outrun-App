@@ -1,0 +1,8 @@
+sources:
+  - name: outrun
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/86310/outrun/version/latest
+documents:
+  - ./src/subgraph/stake.graphql
+  - ./src/subgraph/pool.graphql

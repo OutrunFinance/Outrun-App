@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "KronaOne";
+  src: url("/fonts/KronaOne.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Verdana";
+  src: url("/fonts/verdana.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  src: url("/fonts/Avenir.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.card-mask {
+  background: linear-gradient(204deg, #131829 0%, #1b1d4f 100%);
+  border-radius: 1.5rem 1.5rem 1.5rem 1.5rem;
+  border: 0.06rem solid;
+  border-image: linear-gradient(
+      210deg,
+      rgba(255, 255, 255, 0.6000000238418579),
+      rgba(202.2539359331131, 191.70472919940948, 255, 0),
+      rgba(140.67538261413574, 117.81045913696289, 255, 0.27300613415265573),
+      rgba(88.57300400733948, 55.28761088848114, 255, 0.5040000042915338)
+    )
+    0.06 0.06;
+}
+
+.card-inner {
+  background: linear-gradient(150deg, rgba(19, 24, 41, 0) 0%, rgba(65, 38, 118, 0.7523) 68%, #a11a9a 85%, #df98f3 96%);
+  border-radius: 1.5rem 1.5rem 1.5rem 1.5rem;
+  border: 0.06rem solid;
+  border-image: linear-gradient(
+      220deg,
+      rgba(193.87454956769943, 154.57964211702347, 255, 0.3660000231266025),
+      rgba(224.09385681152344, 204.22566533088684, 255, 0.09000000715255752),
+      rgba(226.21280550956726, 207.70676493644714, 255, 0.05400000429153451)
+    )
+    0.06 0.06 round;
+}
+
+.menuItem > span {
+  overflow: visible;
+}

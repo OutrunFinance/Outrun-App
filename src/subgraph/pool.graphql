@@ -1,0 +1,73 @@
+fragment PoolToken on Token {
+  id
+  name
+  symbol
+  decimals
+}
+
+query Pair($addr: Bytes) {
+  pairs(first: 1, where: { id: $addr }) {
+    id
+    token0 {
+      ...PoolToken
+    }
+    token1 {
+      ...PoolToken
+    }
+    pairDayData {
+      reserveUSD
+      dailyVolumeUSD
+    }
+    reserveUSD
+    reserve0
+    reserve1
+    totalSupply
+  }
+}
+
+query Pools($id: Bytes) {
+  pairs(orderBy: reserveUSD, orderDirection: desc, first: 50) {
+    id
+    token0 {
+      ...PoolToken
+    }
+    token1 {
+      ...PoolToken
+    }
+    reserve0
+    reserve1
+    volumeUSD
+    reserveUSD
+    pairDayData {
+      reserveUSD
+      dailyVolumeUSD
+    }
+  }
+}
+
+query LiquidityPositions($user: String, $pair: String) {
+  liquidityPositions(where: { user: $user, pair: $pair, liquidityTokenBalance_gt: "0" }, first: 30, orderBy: liquidityTokenBalance, orderDirection: desc) {
+    pair {
+      id
+      token0 {
+        ...PoolToken
+      }
+      token1 {
+        ...PoolToken
+      }
+      totalSupply
+      reserve0
+      reserve1
+      reserveUSD
+      volumeUSD
+      pairDayData {
+        reserveUSD
+        dailyVolumeUSD
+      }
+    }
+    user {
+      id
+    }
+    liquidityTokenBalance
+  }
+}

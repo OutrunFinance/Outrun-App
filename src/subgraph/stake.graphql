@@ -1,0 +1,26 @@
+query RethPosition($account: Bytes) {
+  stakeORETHs(orderBy: deadline, orderDirection: desc, where: { account: $account, status: 1 }) {
+    positionId
+    account
+    amountInORETH
+    amountInOSETH
+    amountInREY
+    blockNumber
+    blockTimestamp
+    transactionHash
+    deadline
+    status
+  }
+}
+
+query RusdPosition($account: Bytes) {
+  stakeORUSDs(orderBy: deadline, orderDirection: desc, where: { account: $account, status: 1 }) {
+    positionId
+    account
+    status
+    amountInORUSD
+    amountInOSUSD
+    amountInRUY
+    deadline
+  }
+}
