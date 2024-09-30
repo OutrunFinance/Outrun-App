@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react'
-import { ArrowUpDown, Star, TrendingUp } from 'lucide-react'
+import { ArrowUpDown, Star, TrendingUp, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -105,12 +105,15 @@ export default function EnhancedMarketPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="relative">
             <LiquidStakingCard />
-            <button
+            <Button
               onClick={handleClosePopup}
-              className="absolute top-4 right-4 text-white hover:text-gray-300"
+              className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors duration-300"
+              variant="ghost"
+              size="icon"
+              aria-label="Close"
             >
-              Close
-            </button>
+              <X className="h-6 w-6" />
+            </Button>
           </div>
         </div>
       )}

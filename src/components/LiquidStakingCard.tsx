@@ -1,29 +1,59 @@
-"use client";
-import { Tab, Tabs } from "@nextui-org/react";
-import MintTab from "./MintTab";
-import StakeTab from "./StakeTab";
+"use client"
+
+import { Tab, Tabs } from "@nextui-org/react"
+import { ArrowLeft, Eye } from 'lucide-react'
+import MintTab from "./MintTab"
+import RedeemTab from "./RedeemTab"
 
 export default function LiquidStakingCard() {
   return (
-    <div className="w-[38.44rem] min-h-[31.56rem] shadow-card bg-modal border-[0.06rem] rounded-[1.25rem] border-card">
-      <Tabs
-        aria-label="Yield Pool Tabs"
-        classNames={{
-          base: "w-full h-[4rem]",
-          tab: "h-full data-[hover-unselected=true]:opacity-100 bg-transparent font-kronaOne",
-          tabList: "h-full flex gap-x-8 rounded-none pl-8 pt-8 bg-transparent",
-          tabContent:
-            "text-white group-data-[selected=true]:bg-title text-[1.5rem] leading-[1.88rem] font-kronaOne group-data-[selected=true]:text-transparent group-data-[selected=true]:bg-clip-text",
-          cursor: "bg-transparent",
-          panel: "mt-[0.5rem] py-8",
-        }}>
-        <Tab key="mint" title="Mint">
-          <MintTab />
-        </Tab>
-        <Tab key="stake" title="Stake">
-          <StakeTab />
-        </Tab>
-      </Tabs>
+    <div className="w-full max-w-3xl bg-gray-900 text-white border border-gray-800 rounded-lg shadow-lg">
+      <div className="p-6">
+        <Tabs
+          aria-label="Yield Pool Tabs"
+          color="primary"
+          variant="underlined"
+          classNames={{
+            base: "w-full",
+            tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+            tab: "max-w-fit px-0 h-12",
+            tabContent: "group-data-[selected=true]:text-primary",
+            cursor: "w-full bg-primary",
+            panel: "pt-3",
+          }}
+        >
+          <Tab
+            key="mint"
+            title={
+              <div className="flex items-center space-x-2">
+                <span>Mint</span>
+              </div>
+            }
+          >
+            <MintTab />
+          </Tab>
+          <Tab
+            key="redeem"
+            title={
+              <div className="flex items-center space-x-2">
+                <span>Redeem</span>
+              </div>
+            }
+          >
+            <RedeemTab />
+          </Tab>
+          {/* <Tab
+            key="stake"
+            title={
+              <div className="flex items-center space-x-2">
+                <span>Stake</span>
+              </div>
+            }
+          >
+            <StakeTab />
+          </Tab> */}
+        </Tabs>
+      </div>
     </div>
-  );
+  )
 }
